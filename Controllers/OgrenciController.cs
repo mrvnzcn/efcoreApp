@@ -32,5 +32,25 @@ namespace efcoreApp.Controllers
             return RedirectToAction("Index");
             
         }
+
+        
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if(id == null)
+            { 
+                return NotFound(); 
+            }
+
+            var ogr = await _context.Ogrenciler.FindAsync(id);
+            // var ogr = await _context.Ogrenciler.FirstOrDefaultAsync(o => o.OgrenciId == id);
+
+            if(ogr == null)
+            { 
+                return NotFound(); 
+            }
+            
+            return View(ogr);
+            
+        }
     }
 }
