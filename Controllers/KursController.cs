@@ -41,15 +41,15 @@ namespace efcoreApp.Controllers
                 return NotFound(); 
             }
 
-            var kurslar = await _context.Kurslar.FindAsync(id);
+            var kurs = await _context.Kurslar.FindAsync(id);
             // var ogr = await _context.Ogrenciler.FirstOrDefaultAsync(o => o.OgrenciId == id);
 
-            if(kurslar == null)
+            if(kurs == null)
             { 
                 return NotFound(); 
             }
             
-            return View(kurslar);
+            return View(kurs);
             
         }
 
@@ -69,7 +69,7 @@ namespace efcoreApp.Controllers
                     _context.Update(model);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateException)
                 {
                     if(!_context.Kurslar.Any(o => o.KursId == model.KursId))
                     {
