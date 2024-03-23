@@ -92,25 +92,25 @@ namespace efcoreApp.Controllers
                 return NotFound(); 
             }
 
-            var kurslar = await _context.KursKayitlari.FindAsync(id);
+            var kurs = await _context.Kurslar.FindAsync(id);
 
-            if(kurslar == null)
+            if(kurs == null)
             { 
                 return NotFound(); 
             }
 
-            return View(kurslar);
+            return View(kurs);
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete([FromForm]int id)
         {
-            var kurslar = await _context.KursKayitlari.FindAsync(id);
-            if(kurslar == null) 
+            var kurs = await _context.Kurslar.FindAsync(id);
+            if(kurs == null) 
             { 
                 return NotFound(); 
             }
-            _context.KursKayitlari.Remove(kurslar);
+            _context.Kurslar.Remove(kurs);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
