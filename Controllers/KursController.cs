@@ -16,7 +16,7 @@ namespace efcoreApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var kurslar = await _context.KursKayitlari.ToListAsync();
+            var kurslar = await _context.Kurslar.ToListAsync();
             return View(kurslar);
         }
         public IActionResult Create()
@@ -41,7 +41,7 @@ namespace efcoreApp.Controllers
                 return NotFound(); 
             }
 
-            var kurslar = await _context.KursKayitlari.FindAsync(id);
+            var kurslar = await _context.Kurslar.FindAsync(id);
             // var ogr = await _context.Ogrenciler.FirstOrDefaultAsync(o => o.OgrenciId == id);
 
             if(kurslar == null)
@@ -55,9 +55,9 @@ namespace efcoreApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, KursKayit model)
+        public async Task<IActionResult> Edit(int id, Kurs model)
         {
-            if(id != model.KayitId)
+            if(id != model.KursId)
             {
                 return NotFound();
             }
@@ -71,7 +71,7 @@ namespace efcoreApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if(!_context.KursKayitlari.Any(o => o.KursId == model.KursId))
+                    if(!_context.Kurslar.Any(o => o.KursId == model.KursId))
                     {
                         return NotFound();
                     }
