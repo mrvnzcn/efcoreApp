@@ -14,6 +14,12 @@
             <option value="">Seçiniz.</option>
         </select>
     </div>
+    <div class="mb-3">
+        <label asp-for="OgretmenId" class="form-label">Öğretmen</label>
+        <select asp-for="OgretmenId" asp-items="ViewBag.Ogretmenler" class="form-control">
+            <option value="">Seçiniz.</option>
+        </select>
+    </div>
     
     <button type="submit" class="btn btn-secondary">Kaydet</button>
 </form>

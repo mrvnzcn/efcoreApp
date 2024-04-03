@@ -17,6 +17,7 @@ namespace efcoreApp.Controllers
         {
             var kursKayitlari = await _context
                                 .KursKayitlari
+                                .Include(x => x.Ogretmen)
                                 .Include(x => x.Ogrenci)
                                 .Include(x => x.Kurs)
                                 .ToListAsync();
