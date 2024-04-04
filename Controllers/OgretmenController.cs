@@ -1,12 +1,10 @@
 using efcoreApp.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace efcoreApp.Controllers
 {
-    
-    public class OgretmenController : Controller
+    public class OgretmenController: Controller
     {
         private readonly DataContext _context;
         public OgretmenController(DataContext context)
@@ -16,9 +14,9 @@ namespace efcoreApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var ogretmenler = await _context.Ogretmenler.ToListAsync();
-            return View(ogretmenler);
+            return View(await _context.Ogretmenler.ToListAsync());
         }
+
         public IActionResult Create()
         {
             return View();
@@ -30,31 +28,26 @@ namespace efcoreApp.Controllers
             _context.Ogretmenler.Add(model);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
-            
         }
 
-        [HttpGet]
+         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if(id == null)
-            { 
-                return NotFound(); 
+            {
+                return NotFound();
             }
 
             var entity = await _context
                                 .Ogretmenler
-                                // .Include(o => o.KursKayitlari)
-                                // .ThenInclude(o => o.Kurs)
                                 .FirstOrDefaultAsync(o => o.OgretmenId == id);
-            // var ogr = await _context.Ogretmenler.FirstOrDefaultAsync(o => o.OgretmenId == id);
 
-            if(entity == null)
-            { 
-                return NotFound(); 
+            if(entity == null) 
+            {
+                return NotFound();
             }
-            
+
             return View(entity);
-            
         }
 
         [HttpPost]
@@ -73,14 +66,16 @@ namespace efcoreApp.Controllers
                     _context.Update(model);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch(DbUpdateConcurrencyException)
                 {
-                    if(!_context.Ogretmenler.Any(o => o.OgretmenId == model.OgretmenId))
+                    if(!_context.Ogrenciler.Any(o => o.OgrenciId == model.OgretmenId))
                     {
                         return NotFound();
+                    } 
+                    else 
+                    {
+                        throw;
                     }
-                    else
-                    {throw;}
                 }
                 return RedirectToAction("Index");
             }
@@ -92,31 +87,33 @@ namespace efcoreApp.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             if(id == null)
-            { 
-                return NotFound(); 
+            {
+                return NotFound();
             }
 
-            var ogr = await _context.Ogretmenler.FindAsync(id);
+            var ogretmen = await _context.Ogretmenler.FindAsync(id);
 
-            if(ogr == null)
-            { 
-                return NotFound(); 
+            if(ogretmen == null)
+            {
+                return NotFound();
             }
 
-            return View(ogr);
+            return View(ogretmen);
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete([FromForm]int id)
         {
-            var Ogretmen = await _context.Ogretmenler.FindAsync(id);
-            if(Ogretmen == null) 
-            { 
-                return NotFound(); 
+            var ogretmen = await _context.Ogretmenler.FindAsync(id);
+            if(ogretmen == null)
+            {
+                return NotFound();
             }
-            _context.Ogretmenler.Remove(Ogretmen);
+            _context.Ogretmenler.Remove(ogretmen);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+        
+
     }
 }

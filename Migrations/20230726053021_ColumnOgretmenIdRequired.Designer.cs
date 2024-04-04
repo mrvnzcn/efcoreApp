@@ -11,14 +11,14 @@ using efcoreApp.Data;
 namespace efcoreApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240324144928_AddTableOgretmen")]
-    partial class AddTableOgretmen
+    [Migration("20230726053021_ColumnOgretmenIdRequired")]
+    partial class ColumnOgretmenIdRequired
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.8");
 
             modelBuilder.Entity("efcoreApp.Data.Kurs", b =>
                 {
@@ -29,7 +29,7 @@ namespace efcoreApp.Migrations
                     b.Property<string>("Baslik")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("OgretmenId")
+                    b.Property<int>("OgretmenId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("KursId");
@@ -116,7 +116,9 @@ namespace efcoreApp.Migrations
                 {
                     b.HasOne("efcoreApp.Data.Ogretmen", "Ogretmen")
                         .WithMany("Kurslar")
-                        .HasForeignKey("OgretmenId");
+                        .HasForeignKey("OgretmenId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Ogretmen");
                 });

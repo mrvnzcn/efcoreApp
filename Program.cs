@@ -8,8 +8,8 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<DataContext>(options => {
     var config = builder.Configuration;
-    var conectionString = config.GetConnectionString("database");
-    options.UseSqlite(conectionString);
+    var connectionString = config.GetConnectionString("database");
+    options.UseSqlite(connectionString);
 });
 
 var app = builder.Build();

@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace efcoreApp.Controllers
 {
-    public class KursKayitController : Controller
+    public class KursKayitController:Controller
     {
         private readonly DataContext _context;
         public KursKayitController(DataContext context)
-        {
+        {   
             _context = context;
         }
 
@@ -17,12 +17,11 @@ namespace efcoreApp.Controllers
         {
             var kursKayitlari = await _context
                                 .KursKayitlari
-                                .Include(x => x.Ogretmen)
                                 .Include(x => x.Ogrenci)
                                 .Include(x => x.Kurs)
                                 .ToListAsync();
             return View(kursKayitlari);
-        }
+        } 
 
         public async Task<IActionResult> Create()
         {
@@ -30,17 +29,19 @@ namespace efcoreApp.Controllers
             ViewBag.Kurslar = new SelectList(await _context.Kurslar.ToListAsync(), "KursId","Baslik");
 
             return View();
-
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]        
         public async Task<IActionResult> Create(KursKayit model)
         {
             model.KayitTarihi = DateTime.Now;
             _context.KursKayitlari.Add(model);
             await _context.SaveChangesAsync();
+
             return RedirectToAction("Index");
         }
+
+
     }
 }
